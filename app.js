@@ -1,70 +1,19 @@
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+var myApp = angular.module('myApp',['ngRoute']);
 
-app.use(express.static(__dirname+'/client'));
-app.use(bodyParser.json());
-
-Book =require('./models/book');
-
-// Connect to Mongoose
-mongoose.connect('mongodb://localhost/bpost');
-var db = mongoose.connection;
-
-app.get('/', (req, res) => {
-	res.send('Please use /api/books or /api/comments');
-});
-
-
-app.get('/api/books', (req, res) => {
-	Book.getBooks((err, books) => {
-		if(err){
-			throw err;
-		}
-		res.json(books);
+myApp.config(function($routeProvider){
+	$routeProvider.when('/', {
+		controller:'BooksController',
+		templateUrl: 'views/books.html'
+	})
+	.when('/books', {
+		controller:'BooksController',
+		templateUrl: 'views/books.html'
+	})
+	.when('/books/details/:id',{
+		controller:'BooksController',
+		templateUrl: 'views/book_details.html'
+	})
+	.otherwise({
+		redirectTo: '/'
 	});
 });
-
-app.get('/api/books/:_id', (req, res) => {
-	Book.getBookById(req.params._id, (err, book) => {
-		if(err){
-			throw err;
-		}
-		res.json(book);
-	});
-});
-
-app.post('/api/books', (req, res) => {
-	var book = req.body;
-	Book.addBook(book, (err, book) => {
-		if(err){
-			throw err;
-		}
-		res.json(book);
-	});
-});
-
-app.put('/api/books/:_id', (req, res) => {
-	var id = req.params._id;
-	var book = req.body;
-	Book.updateBook(id, book, {}, (err, book) => {
-		if(err){
-			throw err;
-		}
-		res.json(book);
-	});
-});
-
-app.delete('/api/books/:_id', (req, res) => {
-	var id = req.params._id;
-	Book.removeBook(id, (err, book) => {
-		if(err){
-			throw err;
-		}
-		res.json(book);
-	});
-});
-
-app.listen(3000);
-console.log('Running on port 3000...');

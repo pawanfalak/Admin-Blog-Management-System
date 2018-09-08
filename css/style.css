@@ -1,0 +1,18 @@
+img{width:100%;}
+.navbar-custom {
+    background-color: #FF0000;
+}
+.navbar-custom .navbar-brand,
+.navbar-custom .navbar-text {
+    color: rgba(255,255,255,.8);
+}
+.panel > .panel-heading {
+    background-image: none;
+    background-color: red;
+    color: white;
+
+}
+.asd{
+    margin-left: 10;
+    margin-right: 10;
+}
